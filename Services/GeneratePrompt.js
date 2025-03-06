@@ -2,11 +2,11 @@ const GeneratePrompt = async (personalData, educationResult, answers) => {
   try {
     const educationLevel = personalData.education;
 
-    // Define question list dynamically for flexibility
+    // Define dynamic question list
     const questionsList = {
       q1: "How confident do you feel in your mathematics and science abilities? (1 to 5)",
       q2: "Rate your proficiency in using computers and software applications (1 to 5).",
-      q3: "How comfortable are you with writing essays or reports? (1 to 5.)",
+      q3: "How comfortable are you with writing essays or reports? (1 to 5)",
       q4: "Describe any notable academic achievements after age 15.",
       q5: "Have you learned or practiced coding? If so, through what method?",
       q6: "What programming languages have you tried, and what have you created?",
@@ -21,63 +21,162 @@ const GeneratePrompt = async (personalData, educationResult, answers) => {
       q15: "Do you prefer working individually or in a team? Explain why.",
     };
 
-    // Build the AI prompt based on the education level
-    let prompt = "";
+    // Construct user responses dynamically
+    const formattedResponses = Object.entries(questionsList)
+      .map(([key, question]) => `${question}: ${answers[`answer${key.substring(1)}`] || "Not provided"}`)
+      .join("\n");
 
-    if (educationLevel === "preol") {
-      prompt = `
-        You are a digital career counselor assisting a Sri Lankan student who has not yet faced the GCE O/L examination.
-        ---------------------------------------------
-        User Details:
-        ${JSON.stringify(personalData, null, 2)}
-        ---------------------------------------------
-        User Responses:
-        ${Object.entries(questionsList)
-        .map(
-            ([key, question]) =>
-            `${question}: ${answers[`answer${key.substring(1)}`] || "Not provided"}`
-        )
-        .join("\n")}
-        ---------------------------------------------
-        Carefully analyze the user's input and generate insights about their passions, skills, and possible higher education paths in Sri Lanka. act as a professionnal career counselor and provide the user with the best advice possible always use your the persons name not his her. in path mention the private paid options and free government option both
-
-        ## OUTPUT FORMAT ##
-        {
-        "enoughInformation": "true/false (make it false if the given information is not sufficient)",
-        "passion": "200-word attractive and professional description about the user's passion based on the answers",
-        "skill": "200-word attractive and professional description about the user's skillset based on the answers",
-        "higherEducation": [
-            {
-            "name": "Name of the course",
-            "description": "100-word description of the course",
-            "path": "Recommended path to pursue this course"
-            },
-            {
-            "name": "Name of another course",
-            "description": "100-word description of the course",
-            "path": "Recommended path to pursue this course"
-            },
-            {
-            "name": "Name of another course",
-            "description": "100-word description of the course",
-            "path": "Recommended path to pursue this course"
-            },
-            {
-            "name": "Name of another course",
-            "description": "100-word description of the course",
-            "path": "Recommended path to pursue this course"
-            },
-            {
-            "name": "Name of another course",
-            "description": "100-word description of the course",
-            "path": "Recommended path to pursue this course"
-            },
-        ]
-        }
-            `;
-    } else {
-      prompt = `User's education level (${educationLevel}) is not currently handled in this implementation.`;
+    // Define education-specific details
+    let educationDetails = "";
+    if (["ol", "preal", "al", "degree"].includes(educationLevel)) {
+      educationDetails = `
+      ---------------------------------------------
+      User Education Details:
+      ${JSON.stringify(educationResult, null, 2)}
+      ---------------------------------------------`;
     }
+
+    // Generate the AI prompt
+    const prompt = `
+      You are a digital career counselor assisting a Sri Lankan student at the ${educationLevel.toUpperCase()} level.
+      
+      ---------------------------------------------
+      User Details:
+      ${JSON.stringify(personalData, null, 2)}
+      ${educationDetails}
+      
+      User Responses:
+      ${formattedResponses}
+      ---------------------------------------------
+      
+      Carefully analyze the user's input and generate insights about their passions, skills, and possible ${educationLevel === "degree" ? "career" : "higher education and career"} paths in Sri Lanka.
+      Act as a professional career counselor and provide the best advice possible. Always use the person's name you, your instead of pronouns.
+      When recommending education paths, mention both private (paid) and free government options.
+
+      ## OUTPUT FORMAT ##
+      {
+        "enoughInformation": "true/false (false if the given information is not sufficient)",
+        "passion": "A 200-word professional description about the user's passion based on the responses.",
+        "skill": "A 200-word professional description about the user's skillset based on the responses.",
+        ${educationLevel !== "degree" ? `
+        "higherEducation": [
+          {
+            "name": "Course Name",
+            "description": "A 150-word description of the course.",
+            "path": "Recommended path to pursue this course.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this course.",
+            "whySuitable": "A 100-word explanation of why this course is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this course"],
+              "cons": ["List of negative aspects of this course"]
+            }
+          },
+          {
+            "name": "Another Course",
+            "description": "A 150-word description of the course.",
+            "path": "Recommended path to pursue this course.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this course.",
+            "whySuitable": "A 100-word explanation of why this course is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this course"],
+              "cons": ["List of negative aspects of this course"]
+            }
+          },
+          {
+            "name": "Another Course",
+            "description": "A 150-word description of the course.",
+            "path": "Recommended path to pursue this course.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this course.",
+            "whySuitable": "A 100-word explanation of why this course is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this course"],
+              "cons": ["List of negative aspects of this course"]
+            }
+          },
+          {
+            "name": "Another Course",
+            "description": "A 150-word description of the course.",
+            "path": "Recommended path to pursue this course.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this course.",
+            "whySuitable": "A 100-word explanation of why this course is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this course"],
+              "cons": ["List of negative aspects of this course"]
+            }
+          },
+          {
+            "name": "Another Course",
+            "description": "A 150-word description of the course.",
+            "path": "Recommended path to pursue this course.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this course.",
+            "whySuitable": "A 100-word explanation of why this course is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this course"],
+              "cons": ["List of negative aspects of this course"]
+            }
+          },
+
+        ],` : ""}
+        "careerPath": [
+          {
+            "name": "Career Name",
+            "description": "A 150-word description of the career.",
+            "path": "Recommended path to pursue this career.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this career.",
+            "whySuitable": "A 100-word explanation of why this career is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this career"],
+              "cons": ["List of negative aspects of this career"]
+            }
+          },
+          {
+            "name": "Another Career",
+            "description": "A 150-word description of the career.",
+            "path": "Recommended path to pursue this career.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this career.",
+            "whySuitable": "A 100-word explanation of why this career is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this career"],
+              "cons": ["List of negative aspects of this career"]
+            }
+              },
+            {
+            "name": "Another Career",
+            "description": "A 150-word description of the career.",
+            "path": "Recommended path to pursue this career.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this career.",
+            "whySuitable": "A 100-word explanation of why this career is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this career"],
+              "cons": ["List of negative aspects of this career"]
+            }
+              },
+            {
+            "name": "Another Career",
+            "description": "A 150-word description of the career.",
+            "path": "Recommended path to pursue this career.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this career.",
+            "whySuitable": "A 100-word explanation of why this career is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this career"],
+              "cons": ["List of negative aspects of this career"]
+            }
+              },
+            {
+            "name": "Another Career",
+            "description": "A 150-word description of the career.",
+            "path": "Recommended path to pursue this career.",
+            "howtoImprove": "A 100-word description of how the user can improve their skills for this career.",
+            "whySuitable": "A 100-word explanation of why this career is suitable for the user based on their answers.",
+            "prosAndCons": {
+              "pros": ["List of positive aspects of this career"],
+              "cons": ["List of negative aspects of this career"]
+            }
+        },
+          }
+        ]
+      }
+    `;
 
     return prompt;
   } catch (error) {
