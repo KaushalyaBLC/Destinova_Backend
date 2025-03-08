@@ -58,7 +58,6 @@ const GeneratePrompt = async (personalData, educationResult, answers) => {
         "enoughInformation": "true/false (false if the given information is not sufficient)",
         "passion": "A 200-word professional description about the user's passion based on the responses.",
         "skill": "A 200-word professional description about the user's skillset based on the responses.",
-        ${educationLevel !== "degree" ? `
         "higherEducation": [
           {
             "name": "Course Name",
@@ -116,7 +115,7 @@ const GeneratePrompt = async (personalData, educationResult, answers) => {
             }
           },
 
-        ],` : ""}
+        ],}
         "careerPath": [
           {
             "name": "Career Name",

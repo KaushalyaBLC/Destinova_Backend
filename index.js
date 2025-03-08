@@ -3,12 +3,17 @@ const app = express();
 const port = 3000;
 const cors = require('cors');
 
+//  Connection to MongoDB
+const connectDB = require('./Util/connectDB');
+connectDB();
+
 // Import routes
 const novaRoute = require('./Routes/NovaRoute');
 
 // Middleware 
 app.use(cors());
 app.use(express.json());
+
 
 // Routes
 app.use('/nova', novaRoute);
