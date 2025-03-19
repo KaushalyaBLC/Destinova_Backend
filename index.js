@@ -9,6 +9,7 @@ connectDB();
 
 // Import routes
 const novaRoute = require('./Routes/NovaRoute');
+const crystalRoute = require('./Routes/crystalRoute');
 
 // Middleware 
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json());
 
 // Routes
 app.use('/nova', novaRoute);
+app.use('/crystal', crystalRoute);
 
 // Start the server
 app.listen(port, () => {
