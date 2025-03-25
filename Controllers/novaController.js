@@ -6,9 +6,6 @@ const novaController = async (req, res) => {
     const data = req.body;
     let { personalData, educationDetails, answers, ip } = data;
   try {
-    // Extract data from the request body
-    
-
     // Ensure valid data is provided
     if (!personalData || !educationDetails || !answers) {
       return res.status(400).json({ error: "Invalid request data" });
