@@ -1,7 +1,8 @@
 const CareerPrompt = async (career) => {
-    const prompt = `Provide detailed career guidance information for the career: ${career}. The response should be formatted in JSON and structured with the following key details. Ensure the information is relevant to students in Sri Lanka, considering the local job market, education system, and opportunities.
+    const prompt = `Provide detailed career guidance information for the career: ${career}. The response should be formatted in JSON and structured with the following key details. Ensure the information is relevant to students in Sri Lanka, considering the local job market, education system, and opportunities. if the user input is not a career make is_career: false,
   
     {
+      "is_career": {true/false},
       "career_title": "${career}",
       "description": "{Brief job description including key responsibilities}",
       "work_environment": "{Office, remote, fieldwork, etc.}",

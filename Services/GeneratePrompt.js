@@ -51,7 +51,7 @@ const GeneratePrompt = async (personalData, educationResult, answers) => {
       
       Carefully analyze the user's input and generate insights about their passions, skills, and possible ${educationLevel === "degree" ? "career" : "higher education and career"} paths in Sri Lanka.
       Act as a professional career counselor and provide the best advice possible. Always use the person's name you, your instead of pronouns.
-      When recommending education paths, mention both private (paid) and free government options.
+      When recommending education paths, mention both private (paid) and free government options.dont give the same things i already provided in the answers.
 
       ## OUTPUT FORMAT ##
       {

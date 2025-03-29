@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const cors = require('cors');
+require("dotenv").config();
 
 //  Connection to MongoDB
 const connectDB = require('./Util/connectDB');
 connectDB();
 
 // Import routes
-const novaRoute = require('./Routes/NovaRoute');
+const novaRoute = require('./Routes/novaRoute');
 const crystalRoute = require('./Routes/crystalRoute');
 
 // Middleware 
