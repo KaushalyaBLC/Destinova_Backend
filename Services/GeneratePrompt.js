@@ -49,13 +49,13 @@ const GeneratePrompt = async (personalData, educationResult, answers) => {
       ${formattedResponses}
       ---------------------------------------------
       
-      Carefully analyze the user's input and generate insights about their passions, skills, and possible ${educationLevel === "degree" ? "career" : "higher education and career"} paths in Sri Lanka.
+      Carefully analyze the user's input and get a overall idea about the user then generate insights about their passions, skills, and possible ${educationLevel === "degree" ? "career" : "higher education and career"} paths in Sri Lanka.
       Act as a professional career counselor and provide the best advice possible. Always use the person's name you, your instead of pronouns.
       When recommending education paths, mention both private (paid) and free government options.dont give the same things i already provided in the answers.
 
       ## OUTPUT FORMAT ##
       {
-        "enoughInformation": "true/false (false if the given information is not sufficient)",
+        "enoughInformation": "true/false (true if the user provided bare minimum information to generate a response)",
         "passion": "A 200-word professional description about the user's passion based on the responses.",
         "skill": "A 200-word professional description about the user's skillset based on the responses.",
         "higherEducation": [
