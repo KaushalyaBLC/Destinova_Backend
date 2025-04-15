@@ -1,7 +1,7 @@
 const HandleGemini = async (prompt) => {
     const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-    const apiKey = 'AIzaSyCxQynEy0_VFfWYx4Py1jD1iP9g09SvyXs'; // Replace with your actual API key
+    const apiKey = process.env.GEMINI_API_KEY; // Replace with your actual API key
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const model = genAI.getGenerativeModel({
