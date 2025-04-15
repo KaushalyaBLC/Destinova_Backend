@@ -47,7 +47,7 @@ Destinova_Backend/
 └── index.js             # Entry point for the application
 ```
 
-##API Endpoints
+## API Endpoints
 **Nova Route (/nova)**
 - POST /nova: Processes user data, generates AI-driven career guidance, and saves data to the database.
 
